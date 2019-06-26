@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+	
+<meta charset="utf-8">
+	
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+<meta name="keywords" content="">
+
+<meta name="description" content="">
+
+	
+<!-- Site title
+   ================================================== -->
+	
+<title>Chaquetas cuero</title>
+
+
+<!-- Bootstrap CSS
+   ================================================== -->
+	
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+<!-- Animate CSS
+   ================================================== -->
+	
+<link rel="stylesheet" href="css/animate.css">
+
+	
+<!-- Font Icons
+   ================================================== -->
+
+<link rel="stylesheet" href="css/font-awesome.min.css">
+
+<link rel="stylesheet" href="css/et-line-font.css">
+
+	
+<!-- Main CSS
+   ================================================== -->
+	
+<link rel="stylesheet" href="css/style.css">
+
+	
+<!-- Google web font 
+   ================================================== -->	
+   
+<link href='https://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
+	
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+<!-- Preloader section
+================================================== -->
+
+<div  class="preloader">
+
+	
+<div class="sk-spinner sk-spinner-pulse">
+</div>
+
+
+</div>
+
+
+
+<script>
+        window.onload = function () {
+            // Variables
+            let baseDeDatos = [
+                {
+                    id: 1,
+                    nombre: 'Chaqueta de cuero l',
+                    precio: 50 
+                },
+                {
+                    id: 2,
+                    nombre: 'Chaqueta de cuero M',
+                    precio: 40
+                },
+               
+            
+
+            ]
+            let $items = document.querySelector('#items');
+            let carrito = [];
+            let total = 0;
+            let $carrito = document.querySelector('#carrito');
+        	    let $total = document.querySelector('#total');
+            // Funciones
+            function renderItems () {
+                for (let info of baseDeDatos) {
+                    // Estructura
+                    let miNodo = document.createElement('div');
+                    miNodo.classList.add('card', 'col-sm-4');
+                    // Body
+                    let miNodoCardBody = document.createElement('div');
+                    miNodoCardBody.classList.add('card-body');
+                    // Titulo
+                    let miNodoTitle = document.createElement('h5');
+                    miNodoTitle.classList.add('card-title');
+                    miNodoTitle.textContent = info['nombre'];
+                    // Precio
+                    let miNodoPrecio = document.createElement('p');
+                    miNodoPrecio.classList.add('card-text');
+                    miNodoPrecio.textContent = info['precio'] + '$';
+                    // Boton 
+                    let miNodoBoton = document.createElement('button');
+                    miNodoBoton.classList.add('btn', 'btn-primary');
+                    miNodoBoton.textContent = '+Agregar';
+                    miNodoBoton.setAttribute('marcador', info['id']);
+                    miNodoBoton.addEventListener('click', anyadirCarrito);
+                    // Insertamos
+                    miNodoCardBody.appendChild(miNodoTitle);
+                    miNodoCardBody.appendChild(miNodoPrecio);
+                    miNodoCardBody.appendChild(miNodoBoton);
+                    miNodo.appendChild(miNodoCardBody);
+                    $items.appendChild(miNodo);
+                }
+            }
+            function anyadirCarrito () {
+                // Anyadimos el Nodo a nuestro carrito
+                carrito.push(this.getAttribute('marcador'))
+                // Calculo el total
+                calcularTotal();
+                // Renderizamos el carrito 
+                renderizarCarrito();
+
+            }
+
+            function renderizarCarrito () {
+                // Vaciamos todo el html
+                $carrito.textContent = '';
+                // Generamos los Nodos a partir de carrito
+                carrito.forEach(function (item, indice) {
+                    // Obtenemos el item que necesitamos de la variable base de datos
+                    let miItem = baseDeDatos.filter(function(itemBaseDatos) {
+                        return itemBaseDatos['id'] == item;
+                    });
+                    // Creamos el nodo del item del carrito
+                    let miNodo = document.createElement('li');
+                    miNodo.classList.add('list-group-item', 'text-right');
+                    miNodo.textContent = `${miItem[0]['nombre']} - ${miItem[0]['precio']}$`;
+                    // Boton de borrar
+                    let miBoton = document.createElement('button');
+                    miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                    miBoton.textContent = 'X';
+                    miBoton.setAttribute('posicion', indice);
+                    miBoton.addEventListener('click', borrarItemCarrito);
+                    // Mezclamos nodos
+                    miNodo.appendChild(miBoton);
+                    $carrito.appendChild(miNodo);
+                })
+            }
+
+            function borrarItemCarrito () {
+                // Obtenemos la posicion que hay en el boton pulsado
+                let posicion = this.getAttribute('posicion');
+                // Borramos la posicion que nos interesa
+                carrito.splice(posicion, 1);
+                // volvemos a renderizar
+                renderizarCarrito();
+                // Calculamos de nuevo el precio
+                calcularTotal();
+            }
+
+            function calcularTotal () {
+                // Limpiamos precio anterior
+                total = 0;
+                // Recorremos el array del carrito
+                for (let item of carrito) {
+                    // De cada elemento obtenemos su precio
+                    let miItem = baseDeDatos.filter(function(itemBaseDatos) {
+                        return itemBaseDatos['id'] == item;
+                    });
+                    total = total + miItem[0]['precio'];
+                }
+                // Formateamos el total para que solo tenga dos decimales
+                let totalDosDecimales = total.toFixed(2);
+                // Renderizamos el precio en el HTML
+                $total.textContent = totalDosDecimales;
+            }
+            // Eventos
+
+            // Inicio
+            renderItems();
+        } 
+    </script>
+
+<!-- Home section
+================================================== -->
+
+
+<section id="home" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-offset-2 col-md-8 col-sm-12">
+				<h2 class="wow bounceIn">Chamarras Varoniles.</h2>
+				<h4 class="font-weight-normal font-color-gray wow fadeInUp" data-wow-delay="1s">
+                                 Chamarra es una prenda amplia de vestir,rustica, de abrigo, que cubre el cuerpo hasta medio muslo, hecha de piel con lana o pelo por fuera o por dentro.</h4>
+				<a href="#service" class="btn btn-default section-btn smoothScroll wow fadeInUp" data-wow-delay="1.9s">Saber mas</a>
+				<a href="#contact" class="btn btn-warning section-btn smoothScroll hidden-xs wow fadeInUp" data-wow-delay="1.9s">CONTACTANOS</a>
+			</div>
+
+		</div>
+	</div>		
+</section>
+
+<!-- Navigation section
+================================================== -->
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">PROVENTASEBO.</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="indexs.html" class="smoothScroll">CASA</a></li>
+				<li><a href="indexs.html#service" class="smoothScroll">SERVICIOS</a></li>
+				<li><a href="indexs.html#about" class="smoothScroll">ACERCA DE LAS CHAMARRAS</a></li>
+				<li><a href="indexs.html#team" class="smoothScroll">NOSOTROS</a></li>
+				<li><a href="indexs.html#portfolio" class="smoothScroll">ULTIMOS MODELOS</a></li>
+				<li><a href="indexs.html#contact" class="smoothScroll">CONTACTANOS</a></li>
+			</ul>
+		</div>
+
+	</div>
+</div>
+
+
+
+<!-- portfolio section================================================== -->
+<section id="portfolio" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<!-- Section title
+			================================================== -->
+			<div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow bounceIn text-center">
+				<div class="section-title">
+					<h1>Ultimos modelos</h1>
+					<p>Cada mes se actualizan los medelos para vender, reserva tu pedido.</p>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.9s">
+				<div class="portfolio-thumb">
+               		<a href="images/chamarracuero.jpg" data-lightbox-gallery="portfolio-gallery">
+               			<img src="images/chamarracuero.jpg" class="fluid-img" alt="portfolio img">
+               				<div class="portfolio-overlay">
+               					<div class="portfolio-overlay-des">
+               						<h3>Chaqueta cuero</h3>
+                                                        <h3> Talla L</h3>
+               				 		<h5>Calidad / Cuero / Modelo similar</h5>
+               					</div>
+               				</div>
+               		</a>
+               	</div>
+                
+			</div>
+			<div class="col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.9s">
+				<div class="portfolio-thumb">
+               		<a href="images/chaquetadecuero.jpg" data-lightbox-gallery="portfolio-gallery">
+               			<img src="images/chaquetadecuero.jpg" class="fluid-img" alt="portfolio img">
+               				<div class="portfolio-overlay">
+               				 	<div class="portfolio-overlay-des">
+               			
+               				 		<h3>Chaqueta cuero</h3>
+                                                        <h3> Talla M</h3>
+               				 		<h5>Calidad / Cuero / Modelo similar</h5>
+               					</div>
+               				</div>
+               		</a>
+                        
+               	</div>
+                 
+			
+		</div>
+	</div>
+</section>
+<div class="container">
+        <div class="row">
+            <!-- Elementos generados a partir del JSON -->
+            <main id="items" class="col-sm-8 row"></main>
+            <!-- Carrito -->
+            <aside class="col-sm-4">
+                <h2>Carrito</h2>
+                <!-- Elementos del carrito -->
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <!-- Precio total -->
+                <p class="text-right">Total: <span id="total"></span>&Dolares;</p>
+            </aside>
+        </div>
+    </div>
+
+</div>
+
+<tr>
+  <td colspan="5">
+<form action="pagar.html" method="post">
+  <div class= "alert alert-success">
+    <div class="form-group">
+           <label for="my-input">Correo de contacto:</label>
+           <input id="email" name="email"
+           class="form-control"
+           type="email"   
+           placeholder="Por favor escribe tu correo"
+           required> 
+    </div>
+    <small id="emailHelp"
+    class="form-text text-muted"
+    >
+    Acerca de los productos se comentara a este correo.
+    </small> 
+  </div>
+
+   <button class="btn btn-primary btn-Ig btn-block" type="submit"
+     name="btnAccion"
+     Value="proceder">
+     proceder a pagar>>
+   </button>     
+  </td>
+
+</tr>
+
+
+<!-- Footer section
+================================================== -->
+<footer>
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-12 col-sm-12 wow fadeInUp" data-wow-delay="1s">
+				<p>Copyright PROVENTASEBO| Todos los derechos reservados.</p>
+				<ul class="social-icon">
+					<li><a href="#" class="fa fa-facebook wow fadeIn" data-wow-delay="0.9s"></a></li>
+					<li><a href="#" class="fa fa-twitter wow fadeIn" data-wow-delay="0.9s"></a></li>
+					<li><a href="#" class="fa fa-google-plus wow fadeIn" data-wow-delay="0.9s"></a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+</footer>
+<!-- Javascript 
+================================================== -->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.backstretch.min.js"></script>
+<script src="js/jquery.parallax.js"></script>
+<script src="js/nivo-lightbox.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/smoothscroll.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/custom.js"></script>
+
+
+</body>
+</html>
